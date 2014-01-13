@@ -1,6 +1,14 @@
 # -*- coding: utf-8 -*-
 
-from acc import Decimal, session, Account
+from decimal import Decimal
+from sqlalchemy.engine import create_engine
+from sqlalchemy.orm import sessionmaker
+from acc import Base, Account
+
+engine = create_engine('sqlite:///test_data.db', echo=True)
+session = sessionmaker(bind=engine)()
+Base.metadata.bind = engine
+Base.metadata.create_all()
 
 # Create accounts
 activo = Account(code=u'1', name=u'Activo')

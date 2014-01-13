@@ -3,14 +3,11 @@
 from decimal import Decimal
 
 from sqlalchemy import Column, Integer, Numeric, Unicode, ForeignKey
-from sqlalchemy.engine import create_engine
-from sqlalchemy.orm import sessionmaker, relationship, backref
+from sqlalchemy.orm import relationship, backref
 from sqlalchemy.ext.declarative import declarative_base
 
-engine = create_engine('sqlite:///test_data.db', echo=True)
-session = sessionmaker(bind=engine)()
 
-Base = declarative_base(bind=engine)
+Base = declarative_base()
 
 
 class InvaidArgumentError(ValueError):
@@ -82,6 +79,3 @@ class Account(Base):
     def __repr__(self):
         return "<Account(name={}, code={}, balance={})>".format(
                 self.name, self.code, self.balance)
-
-
-Base.metadata.create_all()
