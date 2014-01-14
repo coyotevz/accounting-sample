@@ -12,7 +12,7 @@ session = sessionmaker(bind=engine)()
 Base.metadata.bind = engine
 Base.metadata.create_all()
 
-activo = A(code=u'1', name=u'Activo', children=[
+activo = A(code=u'1', name=u'Activo', type=A.TYPE_CREDIT, children=[
     A(code=u'1', name=u'Activo Corriente', children=[
         A(code=u'1', name=u'Caja y Bancos', children=[
             A(code=u'1', name=u'Caja General'),
@@ -36,7 +36,7 @@ activo = A(code=u'1', name=u'Activo', children=[
             A(code=u'1', name=u'Plazo Fijo'),
             A(code=u'2', name=u'Int. Plazo Fijo a Devengar'),
             A(code=u'3', name=u'Prestamos a Cobrar'),
-            A(code=u'4', name=u'int. Prestamos a Devengar'),
+            A(code=u'4', name=u'Int. Prestamos a Devengar'),
             A(code=u'5', name=u'Acciones'),
             A(code=u'6', name=u'Otras Inversiones'),
         ]),
@@ -75,7 +75,7 @@ activo = A(code=u'1', name=u'Activo', children=[
     ])
 ])
 
-pasivo = A(code=u'2', name=u'Pasivo', children=[
+pasivo = A(code=u'2', name=u'Pasivo', type=A.TYPE_DEBIT, children=[
     A(code=u'1', name=u'Pasivo Corriente', children=[
         A(code=u'1', name=u'Deudas Comerciales', children=[
             A(code=u'1', name=u'Proveedores Clase A'),
@@ -115,7 +115,7 @@ pasivo = A(code=u'2', name=u'Pasivo', children=[
     ]),
 ])
 
-patrimonio = A(code=u'3', name=u'Patrimonio Neto', children=[
+patrimonio = A(code=u'3', name=u'Patrimonio Neto', type=A.TYPE_DEBIT, children=[
     A(code=u'1', name=u'Capital Social', children=[
         A(code=u'1', name=u'Capital')
     ]),

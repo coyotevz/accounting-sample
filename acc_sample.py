@@ -13,7 +13,7 @@ Base.metadata.bind = engine
 Base.metadata.create_all()
 
 # Create accounts
-activo = A(code=u'1', name=u'Activo', children=[
+activo = A(code=u'1', name=u'Activo', type=A.TYPE_CREDIT, children=[
     A(code=u'1', name=u'Activo Corriente', children=[
         A(code=u'1', name=u'Caja y Bancos', children=[
             A(code=u'1', name=u'Caja', children=[
@@ -74,12 +74,12 @@ activo = A(code=u'1', name=u'Activo', children=[
     ]),
 ])
 
-pasivo = A(code=u'2', name=u'Pasivo', children=[
+pasivo = A(code=u'2', name=u'Pasivo', type=A.TYPE_DEBIT, children=[
     A(code=u'1', name=u'Pasivo Corriente'),
     A(code=u'2', name=u'Pasivo No Corriente'),
 ])
 
-patrimonio = A(code=u'3', name=u'Patrimonio Neto', children=[
+patrimonio = A(code=u'3', name=u'Patrimonio Neto', type=A.TYPE_DEBIT, children=[
     A(code=u'1', name=u'Capital'),
     A(code=u'2', name=u'Reservas'),
     A(code=u'3', name=u'Resultados Acumulados'),
