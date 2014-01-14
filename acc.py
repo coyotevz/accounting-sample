@@ -14,19 +14,6 @@ class InvaidArgumentError(ValueError):
     pass
 
 
-class User(Base):
-    __tablename__ = 'users'
-
-    id = Column(Integer, primary_key=True)
-    name = Column(Unicode)
-    fullname = Column(Unicode)
-    password = Column(Unicode)
-
-    def __repr__(self):
-        return "<User(name={}, fullname={}, password={})>".format(
-                self.name, self.fullname, self.password)
-
-
 class Account(Base):
     __tablename__ = 'account'
 
