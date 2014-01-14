@@ -62,7 +62,10 @@ class Account(Base):
 
     @property
     def type(self):
-        return self._type or self.parent.type            
+        if self._type is not None:
+            return self._type
+        else:
+            return  self.parent.type
 
     @type.setter
     def type(self, value):

@@ -4,10 +4,11 @@ from decimal import Decimal
 from sqlalchemy.engine import create_engine
 from sqlalchemy.orm import sessionmaker
 from acc import Base, Account
+from pp import pretty_print
 
 A = Account
 
-engine = create_engine('sqlite:///test_data_1.db', echo=True)
+engine = create_engine('sqlite:///test_data_1.db')
 session = sessionmaker(bind=engine)()
 Base.metadata.bind = engine
 Base.metadata.create_all()
@@ -88,3 +89,7 @@ patrimonio = A(code=u'3', name=u'Patrimonio Neto', type=A.TYPE_DEBIT, children=[
 
 session.add_all([activo, pasivo, patrimonio])
 session.commit()
+
+pretty_print(activo)
+pretty_print(pasivo)
+pretty_print(patrimonio)
