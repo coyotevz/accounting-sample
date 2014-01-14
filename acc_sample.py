@@ -7,7 +7,7 @@ from acc import Base, Account
 
 A = Account
 
-engine = create_engine('sqlite:///test_data.db', echo=True)
+engine = create_engine('sqlite:///test_data_1.db', echo=True)
 session = sessionmaker(bind=engine)()
 Base.metadata.bind = engine
 Base.metadata.create_all()
@@ -86,5 +86,5 @@ patrimonio = A(code=u'3', name=u'Patrimonio Neto', children=[
     A(code=u'4', name=u'Resultados Acumulados Ejercicios Anteriores'),
 ])
 
-session.add(activo)
+session.add_all([activo, pasivo, patrimonio])
 session.commit()
