@@ -6,7 +6,7 @@ def d(v):
     if v == '': return v
     return "{:.2f}".format(v)
 
-def pretty_print(acc):
+def print_account(acc):
     width = 80
     col2 = 9
     col3 = 9
@@ -35,3 +35,9 @@ def print_line(acc, patt):
     else:
         raise ValueError(u'Unknown type for {!r} ({})'.format(acc, acc.type))
     print(patt(u'{} {}'.format(acc.code, name), d(credit), d(debit)))
+
+def print_transaction(t):
+    for dest in t.dest:
+        print(u"  {:<57} {:9} {:9}".format(dest.target.name, d(dest.amount), ""))
+    for src in t.source:
+        print(u"       a {:<50} {:9} {:9}".format(src.target.name, "", d(src.amount)))

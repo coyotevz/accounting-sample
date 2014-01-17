@@ -4,7 +4,7 @@ from decimal import Decimal
 from sqlalchemy.engine import create_engine
 from sqlalchemy.orm import sessionmaker
 from acc import Base, Session, Account, AccountQuery, AccountTransaction
-from pp import pretty_print
+from pp import print_account, print_transaction
 
 A = Account
 
@@ -152,17 +152,43 @@ patrimonio = A(code=u'3', name=u'Patrimonio Neto', type=A.TYPE_DEBIT, children=[
 session.add_all([activo, pasivo, patrimonio])
 session.commit()
 
-#caja = Account.query.get_by_code('1.1.1.1.1')
-#capital = Account.query.get_by_code('3.1.1')
-#banco = Account.query.get_by_code('2.1.2.1')
-#
-#t = AccountTransaction(
-#    source=[(capital, 20000), (banco, 42800)],
-#    dest=(caja, 20000)
-#)
-#session.add(t)
-#session.commit()
-#
-#pretty_print(activo)
-#pretty_print(pasivo)
-#pretty_print(patrimonio)
+caja = Account.query.get_by_code('1.1.1.1.1')
+capital = Account.query.get_by_code('3.1.1')
+banco = Account.query.get_by_code('2.1.2.1')
+
+t1 = AccountTransaction(
+    source=[(capital, 20000), (banco, 42800)],
+    dest=(caja, 62800)
+)
+session.add(t1)
+session.commit()
+
+cta_cte = Account.query.get_by_code('1.1.1.2.1') # Bco. Santander Cta. Cte.
+
+t2 = AccountTransaction(
+    source=[(caja, 12500)],
+    dest=[(cta_cte, 12500)]
+)
+
+session.add(t2)
+session.commit()
+
+print "ASIENTOS"
+print "--------"
+print_transaction(t1)
+print
+print_transaction(t2)
+print
+print
+
+print "BALANCE"
+print "-------"
+print_account(activo)
+print_account(pasivo)
+print_account(patrimonio)
+print
+print
+
+print "ESTADO DE RESULTADO"
+print "-------------------"
+print "TODO"

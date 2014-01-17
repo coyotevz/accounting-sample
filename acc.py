@@ -216,10 +216,8 @@ def _entry_before_commit(session):
         target = entry.target
         amount = entry.amount
         if etype == AccountTransactionEntry.TYPE_SOURCE:
-            print "- decrement {} {}".format(target.name, amount)
             target.decrement(amount)
         elif etype == AccountTransactionEntry.TYPE_DEST:
-            print "+ increment {} {}".format(target.name, amount)
             target.increment(amount)
         else:
             raise TypeError("Unknown transaction type")
