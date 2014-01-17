@@ -4,7 +4,7 @@ from decimal import Decimal
 from datetime import datetime
 
 from sqlalchemy import (
-    Column, Integer, Numeric, Unicode, DateTime, Enum, ForeignKey
+    Column, Integer, Numeric, Unicode, DateTime, Enum, ForeignKey, event
 )
 from sqlalchemy.orm import (
     relationship, backref, object_session, Query, sessionmaker, scoped_session,
@@ -21,6 +21,9 @@ Base = declarative_base()
 class InvaidArgumentError(ValueError):
     pass
 
+class ValidationError(ValueError):
+    pass
+
 
 class AccountQuery(Query):
 
@@ -29,13 +32,12 @@ class AccountQuery(Query):
         self.session = session
 
     def get_by_code(self, code):
-        codes = code.split('.')
+        codes = list(reversed(code.split('.')))
         query = self.session.query(Account)\
                             .filter(Account.code==codes[0])
         for c in codes[1:]:
             query = query.join(Account.parent, aliased=True, from_joinpoint=True)\
                          .filter(Account.code==c)
-        #if query.count() > 1:
         query = query.filter(Account.parent==None)
         return query.one()
 
@@ -105,6 +107,18 @@ class Account(Base):
                                        " level accounts")
         self._type = value
 
+    def increment(self, amount):
+        if self.type == self.TYPE_CREDIT:
+            self.balance += amount
+        else:
+            self.balance -= amount
+
+    def decrement(self, amount):
+        if self.type == self.TYPE_CREDIT:
+            self.balance -= amount
+        else:
+            self.balance += amount
+
     def get_path(self):
         parent = self
         path = []
@@ -148,9 +162,15 @@ class AccountTransaction(Base):
     def dest(self, value):
         self._create_entries(value, AccountTransactionEntry.TYPE_DEST)
 
+    def verify(self):
+        credit = sum([e.amount for e in self.dest])
+        debit = sum([e.amount for e in self.source])
+        if (credit - debit) != 0:
+            raise ValidationError("credit and debit must be equals")
+
     def _get_entries(self, e_type):
         s = object_session(self)
-        return s.query(AccountTransaction)\
+        return s.query(AccountTransactionEntry)\
                 .filter_by(transaction=self)\
                 .filter_by(type=e_type)\
                 .all()
@@ -179,3 +199,42 @@ class AccountTransactionEntry(Base):
     type = Column(Enum(TYPE_SOURCE, TYPE_DEST, name='entry_type'),
                   nullable=False)
     amount = Column(Numeric(10, 2), nullable=False)
+
+    def __repr__(self):
+        return "<AccountTransactionEntry(type={})".format(self.type)
+
+
+def entry_instances(iter_):
+    for obj in iter_:
+        if isinstance(obj, AccountTransactionEntry):
+            yield obj
+
+def _entry_before_commit(session):
+    changed = list(session.new)
+    for entry in entry_instances(changed):
+        etype = entry.type
+        target = entry.target
+        amount = entry.amount
+        if etype == AccountTransactionEntry.TYPE_SOURCE:
+            print "- decrement {} {}".format(target.name, amount)
+            target.decrement(amount)
+        elif etype == AccountTransactionEntry.TYPE_DEST:
+            print "+ increment {} {}".format(target.name, amount)
+            target.increment(amount)
+        else:
+            raise TypeError("Unknown transaction type")
+
+event.listen(Session, 'before_commit', _entry_before_commit)
+
+
+def transaction_instaces(iter_):
+    for obj in iter_:
+        if isinstance(obj, AccountTransaction):
+            yield obj
+
+def _verify_transaction(session):
+    changed = list(session.new) + list(session.dirty)
+    for transaction in transaction_instaces(changed):
+        transaction.verify()
+
+event.listen(Session, "before_commit", _verify_transaction)
