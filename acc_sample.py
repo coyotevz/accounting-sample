@@ -3,15 +3,17 @@
 from decimal import Decimal
 from sqlalchemy.engine import create_engine
 from sqlalchemy.orm import sessionmaker
-from acc import Base, Account
+from acc import Base, Session, Account, AccountQuery, AccountTransaction
 from pp import pretty_print
 
 A = Account
 
 engine = create_engine('sqlite:///test_data_1.db')
-session = sessionmaker(bind=engine)()
+
 Base.metadata.bind = engine
 Base.metadata.create_all()
+
+session = Session(bind=engine)
 
 # Create accounts
 activo = A(code=u'1', name=u'Activo', type=A.TYPE_CREDIT, children=[
@@ -150,6 +152,17 @@ patrimonio = A(code=u'3', name=u'Patrimonio Neto', type=A.TYPE_DEBIT, children=[
 session.add_all([activo, pasivo, patrimonio])
 session.commit()
 
-pretty_print(activo)
-pretty_print(pasivo)
-pretty_print(patrimonio)
+#caja = Account.query.get_by_code('1.1.1.1.1')
+#capital = Account.query.get_by_code('3.1.1')
+#banco = Account.query.get_by_code('2.1.2.1')
+#
+#t = AccountTransaction(
+#    source=[(capital, 20000), (banco, 42800)],
+#    dest=(caja, 20000)
+#)
+#session.add(t)
+#session.commit()
+#
+#pretty_print(activo)
+#pretty_print(pasivo)
+#pretty_print(patrimonio)
