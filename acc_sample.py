@@ -19,50 +19,44 @@ session = Session(bind=engine)
 activo = A(code=u'1', name=u'Activo', type=A.TYPE_CREDIT, children=[
     A(code=u'1', name=u'Activo Corriente', children=[
         A(code=u'1', name=u'Caja y Bancos', children=[
-            A(code=u'1', name=u'Caja', children=[
-                A(code=u'1', name=u'Caja General'),
-                A(code=u'2', name=u'Caja Beltrán'),
-                A(code=u'3', name=u'Caja Colón'),
-            ]),
-            A(code=u'2', name=u'Bancos', children=[
-                A(code=u'1', name=u'Banco Santander Río Cta Cte'),
-                A(code=u'2', name=u'Banco Credicoop Cta Cte'),
-                A(code=u'3', name=u'Banco Nación Caja Seguridad'),
-                A(code=u'4', name=u'Valores a depósitar'),
-            ]),
+            A(code=u'1', name=u'Caja General'),
+            A(code=u'2', name=u'Caja Beltrán'),
+            A(code=u'3', name=u'Caja Colón'),
+            A(code=u'4', name=u'Banco Santander Río Cta Cte'),
+            A(code=u'5', name=u'Banco Credicoop Cta Cte'),
+            A(code=u'6', name=u'Banco Nación Caja Seguridad'),
+            A(code=u'7', name=u'Valores a depósitar'),
         ]),
-        A(code=u'2', name=u'Créditos', children=[
-            A(code=u'1', name=u'Deudores por Ventas', children=[
-                A(code=u'1', name=u'Cliente Clase A'),
-                A(code=u'2', name=u'Cliente Clase B'),
-                A(code=u'3', name=u'Cliente Clase C'),
-                A(code=u'4', name=u'Documentos a cobrar'),
-                A(code=u'5', name=u'Tarjeta VISA'),
-                A(code=u'6', name=u'Tarjeta Mastercard'),
-                A(code=u'7', name=u'Tarjeta Nevada'),
-            ]),
-            A(code=u'2', name=u'Créditos Fiscales', children=[
-                A(code=u'1', name=u'IVA Crédito Fiscal'),
-                A(code=u'2', name=u'Retenciones sufridas IVA'),
-                A(code=u'3', name=u'IVA Saldo a Favor'),
-                A(code=u'4', name=u'Retenciones sufridas Ingresos Brutos'),
-                A(code=u'5', name=u'Ingresos Brutos Saldo a Favor'),
-                A(code=u'6', name=u'Retenciones sufridas Imp. Ganancias'),
-                A(code=u'7', name=u'Anticipo Imp. Ganancias'),
-                A(code=u'8', name=u'Retenciones sufridas SUSS'),
-                A(code=u'9', name=u'Otras retenciones sufridas'),
-            ]),
-            A(code=u'3', name=u'Otros Créditos', children=[
-                A(code=u'1', name=u'Alquileres pagados por adelantado'),
-                A(code=u'2', name=u'Seguros pagados por adelantado'),
-                A(code=u'3', name=u'Anticipos de Sueldo'),
-                A(code=u'4', name=u'Adelantos a Proveedores'),
-                A(code=u'5', name=u'Anticipo Honorarios'),
-                A(code=u'6', name=u'Adelantos Cuenta Particular', children=[
-                    A(code=u'1', name=u'Adelantos a Carlos R.'),
-                    A(code=u'2', name=u'Adelantos a Augusto R.'),
-                    A(code=u'3', name=u'Adelantos a Germán R.'),
-                ]),
+        A(code=u'2', name=u'Deudores por Ventas', children=[
+            A(code=u'1', name=u'Cliente Clase A'),
+            A(code=u'2', name=u'Cliente Clase B'),
+            A(code=u'3', name=u'Cliente Clase C'),
+            A(code=u'4', name=u'Documentos a cobrar'),
+            A(code=u'5', name=u'Tarjeta VISA'),
+            A(code=u'6', name=u'Tarjeta Mastercard'),
+            A(code=u'7', name=u'Tarjeta Nevada'),
+        ]),
+        A(code=u'3', name=u'Créditos Fiscales', children=[
+            A(code=u'1', name=u'IVA Crédito Fiscal'),
+            A(code=u'2', name=u'Retenciones sufridas IVA'),
+            A(code=u'3', name=u'IVA Saldo a Favor'),
+            A(code=u'4', name=u'Retenciones sufridas Ingresos Brutos'),
+            A(code=u'5', name=u'Ingresos Brutos Saldo a Favor'),
+            A(code=u'6', name=u'Retenciones sufridas Imp. Ganancias'),
+            A(code=u'7', name=u'Anticipo Imp. Ganancias'),
+            A(code=u'8', name=u'Retenciones sufridas SUSS'),
+            A(code=u'9', name=u'Otras retenciones sufridas'),
+        ]),
+        A(code=u'4', name=u'Otros Créditos', children=[
+            A(code=u'1', name=u'Alquileres pagados por adelantado'),
+            A(code=u'2', name=u'Seguros pagados por adelantado'),
+            A(code=u'3', name=u'Anticipos de Sueldo'),
+            A(code=u'4', name=u'Adelantos a Proveedores'),
+            A(code=u'5', name=u'Anticipo Honorarios'),
+            A(code=u'6', name=u'Adelantos Cuenta Particular', children=[
+                A(code=u'1', name=u'Adelantos a Carlos R.'),
+                A(code=u'2', name=u'Adelantos a Augusto R.'),
+                A(code=u'3', name=u'Adelantos a Germán R.'),
             ]),
         ]),
         A(code=u'3', name=u'Bienes de Cambio', children=[
@@ -152,7 +146,7 @@ patrimonio = A(code=u'3', name=u'Patrimonio Neto', type=A.TYPE_DEBIT, children=[
 session.add_all([activo, pasivo, patrimonio])
 session.commit()
 
-caja = Account.query.get_by_code('1.1.1.1.1')
+caja = Account.query.get_by_code('1.1.1.1')
 capital = Account.query.get_by_code('3.1.1')
 banco = Account.query.get_by_code('2.1.2.1')
 
@@ -163,7 +157,7 @@ t1 = AccountTransaction(
 session.add(t1)
 session.commit()
 
-cta_cte = Account.query.get_by_code('1.1.1.2.1') # Bco. Santander Cta. Cte.
+cta_cte = Account.query.get_by_code('1.1.2.1') # Bco. Santander Cta. Cte.
 
 t2 = AccountTransaction(
     source=[(caja, 12500)],
@@ -183,9 +177,9 @@ print
 
 print "BALANCE"
 print "-------"
-print_account(activo)
-print_account(pasivo)
-print_account(patrimonio)
+print_account(activo, 3)
+print_account(pasivo, 3)
+print_account(patrimonio, 3)
 print
 print
 

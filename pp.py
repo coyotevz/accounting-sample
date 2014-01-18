@@ -6,7 +6,7 @@ def d(v):
     if v == '': return v
     return "{:.2f}".format(v)
 
-def print_account(acc):
+def print_account(acc, depth=None):
     width = 80
     col2 = 9
     col3 = 9
@@ -15,12 +15,13 @@ def print_account(acc):
                    **{'col1': col1, 'col2': col2, 'col3': col3})
     #print(patt('', 'DEBE', 'HABER'))
     #print('-'*width)
-    print_lines(acc, patt)
+    print_lines(acc, patt, depth)
 
-def print_lines(acc, patt):
+def print_lines(acc, patt, depth=None):
     print_line(acc, patt)
     for c in acc.children:
-        print_lines(c, patt)
+        if depth > 0 or depth is None:
+            print_lines(c, patt, (depth-1) if depth else None)
 
 def print_line(acc, patt):
     name = unicode(acc.name)
