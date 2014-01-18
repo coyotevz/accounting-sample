@@ -2,7 +2,6 @@
 
 from decimal import Decimal
 from sqlalchemy.engine import create_engine
-from sqlalchemy.orm import sessionmaker
 from acc import Base, Session, Account, AccountQuery, AccountTransaction
 from pp import print_account, print_transaction
 
@@ -16,6 +15,7 @@ Base.metadata.create_all()
 session = Session(bind=engine)
 
 # Create accounts
+# Estado Patrimonial
 activo = A(code=u'1', name=u'Activo', type=A.TYPE_CREDIT, children=[
     A(code=u'1', name=u'Activo Corriente', children=[
         A(code=u'1', name=u'Caja y Bancos', children=[
@@ -59,12 +59,12 @@ activo = A(code=u'1', name=u'Activo', type=A.TYPE_CREDIT, children=[
                 A(code=u'3', name=u'Adelantos a Germán R.'),
             ]),
         ]),
-        A(code=u'3', name=u'Bienes de Cambio', children=[
+        A(code=u'5', name=u'Bienes de Cambio', children=[
             A(code=u'1', name=u'Mercadería Ciudad'),
             A(code=u'2', name=u'Mercadería Godoy Cruz'),
             A(code=u'3', name=u'Mercadería en Transito'),
         ]),
-        A(code=u'4', name=u'Inversiones', children=[
+        A(code=u'6', name=u'Inversiones', children=[
             A(code=u'1', name=u'Plazo Fijo'),
             A(code=u'2', name=u'Int. Plazo Fijo a devengar'),
             A(code=u'3', name=u'Prestamos a cobrar'),
@@ -143,12 +143,42 @@ patrimonio = A(code=u'3', name=u'Patrimonio Neto', type=A.TYPE_DEBIT, children=[
     ]),
 ])
 
-session.add_all([activo, pasivo, patrimonio])
+# Estado de Resultados
+ingresos = A(code=u'4', name=u'Ingresos', type=A.TYPE_DEBIT, children=[
+    A(code=u'1', name=u'Ventas'),
+    A(code=u'2', name=u'Intereses Positivos'),
+    A(code=u'3', name=u'Descuentos Obtenidos'),
+])
+
+egresos = A(code=u'5', name=u'Egresos', type=A.TYPE_CREDIT, children=[
+    A(code=u'1', name=u'Costo de Mercaderias Vendidas'),
+    A(code=u'2', name=u'Amortizaciones'),
+    A(code=u'3', name=u'Alquileres Pagados'),
+    A(code=u'4', name=u'Seguros'),
+    A(code=u'5', name=u'Sueldos'),
+    A(code=u'6', name=u'Cargas Sociales'),
+    A(code=u'7', name=u'Honorarios'),
+    A(code=u'8', name=u'Gastos de Librería'),
+    A(code=u'9', name=u'Gastos Bancarios'),
+    A(code=u'10', name=u'Intereses Negativos'),
+    A(code=u'11', name=u'Impuesto Ingresos Brutos'),
+    A(code=u'12', name=u'Impuesto Ganancias'),
+    A(code=u'13', name=u'Impuesto Inmobiliario'),
+    A(code=u'14', name=u'Servicios Públicos'),
+    A(code=u'15', name=u'Telefonía e Internet'),
+    A(code=u'16', name=u'Gastos en Infraestructura'),
+    A(code=u'17', name=u'Gastos Financieros Tarjeta de Credito'),
+    A(code=u'18', name=u'Publicidad'),
+    A(code=u'19', name=u'Transporte'),
+    A(code=u'20', name=u'Gastos Generales'),
+])
+
+session.add_all([activo, pasivo, patrimonio, ingresos, egresos])
 session.commit()
 
-caja = Account.query.get_by_code('1.1.1.1')
-capital = Account.query.get_by_code('3.1.1')
-banco = Account.query.get_by_code('2.1.2.1')
+caja = Account.query.get_by_code(u'1.1.1.1')
+capital = Account.query.get_by_code(u'3.1.1')
+banco = Account.query.get_by_code(u'2.1.2.1')
 
 t1 = AccountTransaction(
     source=[(capital, 20000), (banco, 42800)],
@@ -157,7 +187,7 @@ t1 = AccountTransaction(
 session.add(t1)
 session.commit()
 
-cta_cte = Account.query.get_by_code('1.1.2.1') # Bco. Santander Cta. Cte.
+cta_cte = Account.query.get_by_code(u'1.1.2.1') # Bco. Santander Cta. Cte.
 
 t2 = AccountTransaction(
     source=[(caja, 12500)],
@@ -167,12 +197,60 @@ t2 = AccountTransaction(
 session.add(t2)
 session.commit()
 
+prov = Account.query.get_by_code(u'2.1.1.2')
+merc = Account.query.get_by_code(u'1.1.5.1')
+iva_cred = Account.query.get_by_code(u'1.1.3.1')
+ret_iibb = Account.query.get_by_code(u'1.1.3.4')
+
+t3 = AccountTransaction(
+    source=[(prov, Decimal('5484.52'))],
+    dest=[(merc, Decimal('4423')),
+          (iva_cred, Decimal('928.83')),
+          (ret_iibb, Decimal('132.69'))]
+)
+
+session.add(t3)
+session.commit()
+
+cb = Account.query.get_by_code(u'1.1.1.2')
+ventas = Account.query.get_by_code(u'4.1')
+cmv = Account.query.get_by_code(u'5.1')
+iva_deb = Account.query.get_by_code(u'2.1.3.1')
+
+# Venta de mercadería y cobro en efectivo, 2 operaciones entre cuentas
+t4a = AccountTransaction(
+    source=[(ventas, 780), (iva_deb, Decimal('163.80'))],
+    dest=[(cb, Decimal('943.80'))],
+)
+t4b = AccountTransaction(
+    source=[(merc, 600)],
+    dest=[(cmv, 600)],
+)
+
+session.add_all([t4a, t4b])
+session.commit()
+
+t5 = AccountTransaction(
+    source=(caja, Decimal('3280.42')),
+    dest=(prov, Decimal('3280.42')),
+)
+
+session.add(t5)
+session.commit()
+
+
 print "ASIENTOS"
 print "--------"
 print_transaction(t1)
 print
 print_transaction(t2)
 print
+print_transaction(t3)
+print
+print_transaction(t4a)
+print_transaction(t4b)
+print
+print_transaction(t5)
 print
 
 print "BALANCE"
@@ -185,4 +263,7 @@ print
 
 print "ESTADO DE RESULTADO"
 print "-------------------"
-print "TODO"
+print_account(ingresos)
+print_account(egresos)
+print
+print

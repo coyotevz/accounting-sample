@@ -39,6 +39,6 @@ def print_line(acc, patt):
 
 def print_transaction(t):
     for dest in t.dest:
-        print(u"  {:<57} {:9} {:9}".format(dest.target.name, d(dest.amount), ""))
+        print(u"  {:<57} {:>9} {:>9}".format(dest.target.name, d(dest.amount), ""))
     for src in t.source:
-        print(u"       a {:<50} {:9} {:9}".format(src.target.name, "", d(src.amount)))
+        print(u"       a {:<50} {:>9} {:>9}".format(src.target.name, "", d(src.amount)))
