@@ -16,169 +16,169 @@ session = Session(bind=engine)
 
 # Create accounts
 # Estado Patrimonial
-activo = A(code=u'1', name=u'Activo', type=A.TYPE_CREDIT, children=[
-    A(code=u'1', name=u'Activo Corriente', children=[
-        A(code=u'1', name=u'Caja y Bancos', children=[
-            A(code=u'1', name=u'Caja General'),
-            A(code=u'2', name=u'Caja Beltrán'),
-            A(code=u'3', name=u'Caja Colón'),
-            A(code=u'4', name=u'Banco Santander Río Cta Cte'),
-            A(code=u'5', name=u'Banco Credicoop Cta Cte'),
-            A(code=u'6', name=u'Banco Nación Caja Seguridad'),
-            A(code=u'7', name=u'Valores a depósitar'),
+activo = A(code='1', name='Activo', type=A.TYPE_CREDIT, children=[
+    A(code='1', name='Activo Corriente', children=[
+        A(code='1', name='Caja y Bancos', children=[
+            A(code='1', name='Caja General'),
+            A(code='2', name='Caja Beltrán'),
+            A(code='3', name='Caja Colón'),
+            A(code='4', name='Banco Santander Río Cta Cte'),
+            A(code='5', name='Banco Credicoop Cta Cte'),
+            A(code='6', name='Banco Nación Caja Seguridad'),
+            A(code='7', name='Valores a depósitar'),
         ]),
-        A(code=u'2', name=u'Deudores por Ventas', children=[
-            A(code=u'1', name=u'Cliente Clase A'),
-            A(code=u'2', name=u'Cliente Clase B'),
-            A(code=u'3', name=u'Cliente Clase C'),
-            A(code=u'4', name=u'Documentos a cobrar'),
-            A(code=u'5', name=u'Tarjeta VISA'),
-            A(code=u'6', name=u'Tarjeta Mastercard'),
-            A(code=u'7', name=u'Tarjeta Nevada'),
+        A(code='2', name='Deudores por Ventas', children=[
+            A(code='1', name='Cliente Clase A'),
+            A(code='2', name='Cliente Clase B'),
+            A(code='3', name='Cliente Clase C'),
+            A(code='4', name='Documentos a cobrar'),
+            A(code='5', name='Tarjeta VISA'),
+            A(code='6', name='Tarjeta Mastercard'),
+            A(code='7', name='Tarjeta Nevada'),
         ]),
-        A(code=u'3', name=u'Créditos Fiscales', children=[
-            A(code=u'1', name=u'IVA Crédito Fiscal'),
-            A(code=u'2', name=u'Retenciones sufridas IVA'),
-            A(code=u'3', name=u'IVA Saldo a Favor'),
-            A(code=u'4', name=u'Retenciones sufridas Ingresos Brutos'),
-            A(code=u'5', name=u'Ingresos Brutos Saldo a Favor'),
-            A(code=u'6', name=u'Retenciones sufridas Imp. Ganancias'),
-            A(code=u'7', name=u'Anticipo Imp. Ganancias'),
-            A(code=u'8', name=u'Retenciones sufridas SUSS'),
-            A(code=u'9', name=u'Otras retenciones sufridas'),
+        A(code='3', name='Créditos Fiscales', children=[
+            A(code='1', name='IVA Crédito Fiscal'),
+            A(code='2', name='Retenciones sufridas IVA'),
+            A(code='3', name='IVA Saldo a Favor'),
+            A(code='4', name='Retenciones sufridas Ingresos Brutos'),
+            A(code='5', name='Ingresos Brutos Saldo a Favor'),
+            A(code='6', name='Retenciones sufridas Imp. Ganancias'),
+            A(code='7', name='Anticipo Imp. Ganancias'),
+            A(code='8', name='Retenciones sufridas SUSS'),
+            A(code='9', name='Otras retenciones sufridas'),
         ]),
-        A(code=u'4', name=u'Otros Créditos', children=[
-            A(code=u'1', name=u'Alquileres pagados por adelantado'),
-            A(code=u'2', name=u'Seguros pagados por adelantado'),
-            A(code=u'3', name=u'Anticipos de Sueldo'),
-            A(code=u'4', name=u'Adelantos a Proveedores'),
-            A(code=u'5', name=u'Anticipo Honorarios'),
-            A(code=u'6', name=u'Adelantos Cuenta Particular', children=[
-                A(code=u'1', name=u'Adelantos a Carlos R.'),
-                A(code=u'2', name=u'Adelantos a Augusto R.'),
-                A(code=u'3', name=u'Adelantos a Germán R.'),
+        A(code='4', name='Otros Créditos', children=[
+            A(code='1', name='Alquileres pagados por adelantado'),
+            A(code='2', name='Seguros pagados por adelantado'),
+            A(code='3', name='Anticipos de Sueldo'),
+            A(code='4', name='Adelantos a Proveedores'),
+            A(code='5', name='Anticipo Honorarios'),
+            A(code='6', name='Adelantos Cuenta Particular', children=[
+                A(code='1', name='Adelantos a Carlos R.'),
+                A(code='2', name='Adelantos a Augusto R.'),
+                A(code='3', name='Adelantos a Germán R.'),
             ]),
         ]),
-        A(code=u'5', name=u'Bienes de Cambio', children=[
-            A(code=u'1', name=u'Mercadería Ciudad'),
-            A(code=u'2', name=u'Mercadería Godoy Cruz'),
-            A(code=u'3', name=u'Mercadería en Transito'),
+        A(code='5', name='Bienes de Cambio', children=[
+            A(code='1', name='Mercadería Ciudad'),
+            A(code='2', name='Mercadería Godoy Cruz'),
+            A(code='3', name='Mercadería en Transito'),
         ]),
-        A(code=u'6', name=u'Inversiones', children=[
-            A(code=u'1', name=u'Plazo Fijo'),
-            A(code=u'2', name=u'Int. Plazo Fijo a devengar'),
-            A(code=u'3', name=u'Prestamos a cobrar'),
-            A(code=u'4', name=u'Int. Prestamos a devengar'),
-            A(code=u'5', name=u'Acciones'),
-            A(code=u'6', name=u'Otras Inversiones'),
+        A(code='6', name='Inversiones', children=[
+            A(code='1', name='Plazo Fijo'),
+            A(code='2', name='Int. Plazo Fijo a devengar'),
+            A(code='3', name='Prestamos a cobrar'),
+            A(code='4', name='Int. Prestamos a devengar'),
+            A(code='5', name='Acciones'),
+            A(code='6', name='Otras Inversiones'),
         ]),
     ]),
 
-    A(code=u'2', name=u'Activo No Corriente', children=[
-        A(code=u'1', name=u'Rodados'),
-        A(code=u'2', name=u'Inmuebles e instalaciones', children=[
-            A(code=u'1', name=u'Terrenos'),
-            A(code=u'2', name=u'Inmuebles'),
-            A(code=u'3', name=u'Instalaciones comerciales'),
-            A(code=u'4', name=u'Equipos de Oficina'),
-            A(code=u'5', name=u'Equipos de Computación'),
+    A(code='2', name='Activo No Corriente', children=[
+        A(code='1', name='Rodados'),
+        A(code='2', name='Inmuebles e instalaciones', children=[
+            A(code='1', name='Terrenos'),
+            A(code='2', name='Inmuebles'),
+            A(code='3', name='Instalaciones comerciales'),
+            A(code='4', name='Equipos de Oficina'),
+            A(code='5', name='Equipos de Computación'),
         ]),
-        A(code=u'3', name=u'Otros Activos Fijos'),
+        A(code='3', name='Otros Activos Fijos'),
     ]),
 ])
 
-pasivo = A(code=u'2', name=u'Pasivo', type=A.TYPE_DEBIT, children=[
-    A(code=u'1', name=u'Pasivo Corriente', children=[
-        A(code=u'1', name=u'Deudas Comerciales', children=[
-            A(code=u'1', name=u'Proveedores Clase A'),
-            A(code=u'2', name=u'Proveedores Clase B'),
-            A(code=u'3', name=u'Proveedores Clase C'),
-            A(code=u'4', name=u'Acreedores Varios'),
-            A(code=u'5', name=u'Obligaciones a Pagar'),
+pasivo = A(code='2', name='Pasivo', type=A.TYPE_DEBIT, children=[
+    A(code='1', name='Pasivo Corriente', children=[
+        A(code='1', name='Deudas Comerciales', children=[
+            A(code='1', name='Proveedores Clase A'),
+            A(code='2', name='Proveedores Clase B'),
+            A(code='3', name='Proveedores Clase C'),
+            A(code='4', name='Acreedores Varios'),
+            A(code='5', name='Obligaciones a Pagar'),
         ]),
-        A(code=u'2', name=u'Deudas Financieras', children=[
-            A(code=u'1', name=u'Prestamos Bancarios'),
-            A(code=u'2', name=u'Intereses a Devengar'),
+        A(code='2', name='Deudas Financieras', children=[
+            A(code='1', name='Prestamos Bancarios'),
+            A(code='2', name='Intereses a Devengar'),
         ]),
-        A(code=u'3', name=u'Deudas Fiscales', children=[
-            A(code=u'1', name=u'IVA Débito Fiscal'),
-            A(code=u'2', name=u'IVA a Pagar'),
-            A(code=u'3', name=u'IVA Retenciones a Depositar'),
-            A(code=u'4', name=u'Ingresos Brutos a Pagar'),
-            A(code=u'5', name=u'Moratoria AFIP'),
-            A(code=u'6', name=u'Provisión Imp. Ganancias'),
+        A(code='3', name='Deudas Fiscales', children=[
+            A(code='1', name='IVA Débito Fiscal'),
+            A(code='2', name='IVA a Pagar'),
+            A(code='3', name='IVA Retenciones a Depositar'),
+            A(code='4', name='Ingresos Brutos a Pagar'),
+            A(code='5', name='Moratoria AFIP'),
+            A(code='6', name='Provisión Imp. Ganancias'),
         ]),
-        A(code=u'4', name=u'Deudas Sociales', children=[
-            A(code=u'1', name=u'Sueldos a Pagar'),
-            A(code=u'2', name=u'Cargas Sociales a Pagar'),
-            A(code=u'3', name=u'Sindicato a Pagar'),
-            A(code=u'4', name=u'Seguro de Vida a Pagar'),
-            A(code=u'5', name=u'FAECYS e INACAP a Pagar'),
-            A(code=u'6', name=u'SAC a Pagar'),
-            A(code=u'7', name=u'Vacaciones a Pagar'),
-            A(code=u'8', name=u'Provisión SAC y Vacaciones'),
+        A(code='4', name='Deudas Sociales', children=[
+            A(code='1', name='Sueldos a Pagar'),
+            A(code='2', name='Cargas Sociales a Pagar'),
+            A(code='3', name='Sindicato a Pagar'),
+            A(code='4', name='Seguro de Vida a Pagar'),
+            A(code='5', name='FAECYS e INACAP a Pagar'),
+            A(code='6', name='SAC a Pagar'),
+            A(code='7', name='Vacaciones a Pagar'),
+            A(code='8', name='Provisión SAC y Vacaciones'),
         ]),
-        A(code=u'5', name=u'Otras Deudas', children=[
-            A(code=u'1', name=u'Honorarios a Pagar'),
-            A(code=u'2', name=u'Dividendos en Efectivo a Pagar'),
-            A(code=u'3', name=u'Prestamos Cuenta Particular', children=[
-                A(code=u'1', name=u'Prestamos de Carlos R.'),
-                A(code=u'2', name=u'Prestamos de Augusto R.'),
-                A(code=u'3', name=u'Prestamos de Germán R.'),
+        A(code='5', name='Otras Deudas', children=[
+            A(code='1', name='Honorarios a Pagar'),
+            A(code='2', name='Dividendos en Efectivo a Pagar'),
+            A(code='3', name='Prestamos Cuenta Particular', children=[
+                A(code='1', name='Prestamos de Carlos R.'),
+                A(code='2', name='Prestamos de Augusto R.'),
+                A(code='3', name='Prestamos de Germán R.'),
             ]),
-            A(code=u'4', name=u'Anticipo Clientes'),
+            A(code='4', name='Anticipo Clientes'),
         ]),
     ]),
-    A(code=u'2', name=u'Pasivo No Corriente'),
+    A(code='2', name='Pasivo No Corriente'),
 ])
 
-patrimonio = A(code=u'3', name=u'Patrimonio Neto', type=A.TYPE_DEBIT, children=[
-    A(code=u'1', name=u'Capital Social', children=[
-        A(code=u'1', name=u'Capital'),
+patrimonio = A(code='3', name='Patrimonio Neto', type=A.TYPE_DEBIT, children=[
+    A(code='1', name='Capital Social', children=[
+        A(code='1', name='Capital'),
     ]),
-    A(code=u'2', name=u'Resultados Acumulados', children=[
-        A(code=u'1', name=u'Reserva Legal'),
-        A(code=u'2', name=u'Resultados No Asignado'),
-        A(code=u'3', name=u'Resultados del Ejercicio'),
+    A(code='2', name='Resultados Acumulados', children=[
+        A(code='1', name='Reserva Legal'),
+        A(code='2', name='Resultados No Asignado'),
+        A(code='3', name='Resultados del Ejercicio'),
     ]),
 ])
 
 # Estado de Resultados
-ingresos = A(code=u'4', name=u'Ingresos', type=A.TYPE_DEBIT, children=[
-    A(code=u'1', name=u'Ventas'),
-    A(code=u'2', name=u'Intereses Positivos'),
-    A(code=u'3', name=u'Descuentos Obtenidos'),
+ingresos = A(code='4', name='Ingresos', type=A.TYPE_DEBIT, children=[
+    A(code='1', name='Ventas'),
+    A(code='2', name='Intereses Positivos'),
+    A(code='3', name='Descuentos Obtenidos'),
 ])
 
-egresos = A(code=u'5', name=u'Egresos', type=A.TYPE_CREDIT, children=[
-    A(code=u'1', name=u'Costo de Mercaderias Vendidas'),
-    A(code=u'2', name=u'Amortizaciones'),
-    A(code=u'3', name=u'Alquileres Pagados'),
-    A(code=u'4', name=u'Seguros'),
-    A(code=u'5', name=u'Sueldos'),
-    A(code=u'6', name=u'Cargas Sociales'),
-    A(code=u'7', name=u'Honorarios'),
-    A(code=u'8', name=u'Gastos de Librería'),
-    A(code=u'9', name=u'Gastos Bancarios'),
-    A(code=u'10', name=u'Intereses Negativos'),
-    A(code=u'11', name=u'Impuesto Ingresos Brutos'),
-    A(code=u'12', name=u'Impuesto Ganancias'),
-    A(code=u'13', name=u'Impuesto Inmobiliario'),
-    A(code=u'14', name=u'Servicios Públicos'),
-    A(code=u'15', name=u'Telefonía e Internet'),
-    A(code=u'16', name=u'Gastos en Infraestructura'),
-    A(code=u'17', name=u'Gastos Financieros Tarjeta de Credito'),
-    A(code=u'18', name=u'Publicidad'),
-    A(code=u'19', name=u'Transporte'),
-    A(code=u'20', name=u'Gastos Generales'),
+egresos = A(code='5', name='Egresos', type=A.TYPE_CREDIT, children=[
+    A(code='1', name='Costo de Mercaderias Vendidas'),
+    A(code='2', name='Amortizaciones'),
+    A(code='3', name='Alquileres Pagados'),
+    A(code='4', name='Seguros'),
+    A(code='5', name='Sueldos'),
+    A(code='6', name='Cargas Sociales'),
+    A(code='7', name='Honorarios'),
+    A(code='8', name='Gastos de Librería'),
+    A(code='9', name='Gastos Bancarios'),
+    A(code='10', name='Intereses Negativos'),
+    A(code='11', name='Impuesto Ingresos Brutos'),
+    A(code='12', name='Impuesto Ganancias'),
+    A(code='13', name='Impuesto Inmobiliario'),
+    A(code='14', name='Servicios Públicos'),
+    A(code='15', name='Telefonía e Internet'),
+    A(code='16', name='Gastos en Infraestructura'),
+    A(code='17', name='Gastos Financieros Tarjeta de Credito'),
+    A(code='18', name='Publicidad'),
+    A(code='19', name='Transporte'),
+    A(code='20', name='Gastos Generales'),
 ])
 
 session.add_all([activo, pasivo, patrimonio, ingresos, egresos])
 session.commit()
 
-caja = Account.query.get_by_code(u'1.1.1.1')
-capital = Account.query.get_by_code(u'3.1.1')
-banco = Account.query.get_by_code(u'2.1.2.1')
+caja = Account.query.get_by_code('1.1.1.1')
+capital = Account.query.get_by_code('3.1.1')
+banco = Account.query.get_by_code('2.1.2.1')
 
 t1 = AccountTransaction(
     source=[(capital, 20000), (banco, 42800)],
@@ -187,7 +187,7 @@ t1 = AccountTransaction(
 session.add(t1)
 session.commit()
 
-cta_cte = Account.query.get_by_code(u'1.1.2.1') # Bco. Santander Cta. Cte.
+cta_cte = Account.query.get_by_code('1.1.2.1') # Bco. Santander Cta. Cte.
 
 t2 = AccountTransaction(
     source=[(caja, 12500)],
@@ -197,10 +197,10 @@ t2 = AccountTransaction(
 session.add(t2)
 session.commit()
 
-prov = Account.query.get_by_code(u'2.1.1.2')
-merc = Account.query.get_by_code(u'1.1.5.1')
-iva_cred = Account.query.get_by_code(u'1.1.3.1')
-ret_iibb = Account.query.get_by_code(u'1.1.3.4')
+prov = Account.query.get_by_code('2.1.1.2')
+merc = Account.query.get_by_code('1.1.5.1')
+iva_cred = Account.query.get_by_code('1.1.3.1')
+ret_iibb = Account.query.get_by_code('1.1.3.4')
 
 t3 = AccountTransaction(
     source=[(prov, Decimal('5484.52'))],
@@ -212,10 +212,10 @@ t3 = AccountTransaction(
 session.add(t3)
 session.commit()
 
-cb = Account.query.get_by_code(u'1.1.1.2')
-ventas = Account.query.get_by_code(u'4.1')
-cmv = Account.query.get_by_code(u'5.1')
-iva_deb = Account.query.get_by_code(u'2.1.3.1')
+cb = Account.query.get_by_code('1.1.1.2')
+ventas = Account.query.get_by_code('4.1')
+cmv = Account.query.get_by_code('5.1')
+iva_deb = Account.query.get_by_code('2.1.3.1')
 
 # Venta de mercadería y cobro en efectivo, 2 operaciones entre cuentas
 t4a = AccountTransaction(
@@ -239,31 +239,31 @@ session.add(t5)
 session.commit()
 
 
-print "ASIENTOS"
-print "--------"
+print("ASIENTOS")
+print("--------")
 print_transaction(t1)
-print
+print()
 print_transaction(t2)
-print
+print()
 print_transaction(t3)
-print
+print()
 print_transaction(t4a)
 print_transaction(t4b)
-print
+print()
 print_transaction(t5)
-print
+print()
 
-print "BALANCE"
-print "-------"
+print("BALANCE")
+print("-------")
 print_account(activo, 3)
 print_account(pasivo, 3)
 print_account(patrimonio, 3)
-print
-print
+print()
+print()
 
-print "ESTADO DE RESULTADO"
-print "-------------------"
+print("ESTADO DE RESULTADO")
+print("-------------------")
 print_account(ingresos)
 print_account(egresos)
-print
-print
+print()
+print()

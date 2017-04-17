@@ -53,8 +53,8 @@ class Account(Base):
     TYPE_DEBIT = 'debit'
 
     _type_str = {
-        TYPE_CREDIT: 'Incrementa por Debe',
-        TYPE_DEBIT: 'Incrementa por Haber',
+        TYPE_CREDIT: u'Incrementa por Debe',
+        TYPE_DEBIT: u'Incrementa por Haber',
     }
 
     id = Column(Integer, primary_key=True)
@@ -62,7 +62,7 @@ class Account(Base):
     name = Column(Unicode, unique=True, nullable=False)
     description = Column(Unicode)
     _balance = Column("balance", Numeric(10,2), default=None)
-    _type = Column("type", Enum(*list(_type_str.keys()), name='account_type'),
+    _type = Column("type", Enum(*_type_str.keys(), name='account_type'),
                    default=None)
 
     parent_id = Column(Integer, ForeignKey('account.id'))
