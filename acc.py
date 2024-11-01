@@ -4,10 +4,22 @@ from decimal import Decimal
 from datetime import datetime
 
 from sqlalchemy import (
-    Column, Integer, Numeric, Unicode, DateTime, Enum, ForeignKey, event
+    Column,
+    Integer,
+    Numeric,
+    Unicode,
+    DateTime,
+    Enum,
+    ForeignKey,
+    event,
 )
 from sqlalchemy.orm import (
-    relationship, backref, object_session, Query, sessionmaker, scoped_session,
+    relationship,
+    backref,
+    object_session,
+    Query,
+    sessionmaker,
+    scoped_session,
 )
 from sqlalchemy.orm.exc import UnmappedClassError
 from sqlalchemy.ext.declarative import declarative_base
@@ -21,6 +33,7 @@ Base = declarative_base()
 class InvaidArgumentError(ValueError):
     pass
 
+
 class ValidationError(ValueError):
     pass
 
@@ -32,40 +45,41 @@ class AccountQuery(Query):
         self.session = session
 
     def get_by_code(self, code):
-        codes = list(reversed(code.split('.')))
-        query = self.session.query(Account)\
-                            .filter(Account.code==codes[0])
+        codes = list(reversed(code.split(".")))
+        query = self.session.query(Account).filter(Account.code == codes[0])
         for c in codes[1:]:
-            query = query.join(Account.parent, aliased=True, from_joinpoint=True)\
-                         .filter(Account.code==c)
-        query = query.filter(Account.parent==None)
+            query = query.join(Account.parent).filter(Account.code == c)
+        query = query.filter(Account.parent == None)
+        print(query)
         return query.one()
 
+
 class Account(Base):
-    __tablename__ = 'account'
+    __tablename__ = "account"
 
     query = Session.query_property(query_cls=AccountQuery)
 
     #: Este tipo de cuenta se incrementa por la columna 'debe'
-    TYPE_CREDIT = 'credit'
+    TYPE_CREDIT = "credit"
 
     #: Este tipo de cuenta se incrementa por la columna 'haber'
-    TYPE_DEBIT = 'debit'
+    TYPE_DEBIT = "debit"
 
     _type_str = {
-        TYPE_CREDIT: 'Incrementa por Debe',
-        TYPE_DEBIT: 'Incrementa por Haber',
+        TYPE_CREDIT: "Incrementa por Debe",
+        TYPE_DEBIT: "Incrementa por Haber",
     }
 
     id = Column(Integer, primary_key=True)
     _code = Column("code", Unicode, nullable=False)
     name = Column(Unicode, unique=True, nullable=False)
     description = Column(Unicode)
-    _balance = Column("balance", Numeric(10,2), default=None)
-    _type = Column("type", Enum(*list(_type_str.keys()), name='account_type'),
-                   default=None)
+    _balance = Column("balance", Numeric(10, 2), default=None)
+    _type = Column(
+        "type", Enum(*list(_type_str.keys()), name="account_type"), default=None
+    )
 
-    parent_id = Column(Integer, ForeignKey('account.id'))
+    parent_id = Column(Integer, ForeignKey("account.id"))
     parent = relationship("Account", remote_side=[id], backref="children")
 
     @hybrid_property
@@ -84,13 +98,14 @@ class Account(Base):
     def balance(self):
         if self.children:
             return sum([c.balance for c in self.children])
-        return self._balance or Decimal('0')
+        return self._balance or Decimal("0")
 
     @balance.setter
     def balance(self, value):
         if self.children:
-            raise InvaidArgumentError("Can't set balance value to an account"
-                                      " with childrens")
+            raise InvaidArgumentError(
+                "Can't set balance value to an account" " with childrens"
+            )
         self._balance = value
 
     @property
@@ -98,13 +113,14 @@ class Account(Base):
         if self._type is not None:
             return self._type
         else:
-            return  self.parent.type
+            return self.parent.type
 
     @type.setter
     def type(self, value):
         if self.parent:
-            raise InvalidArgumentError("Can only set type attribute to top"
-                                       " level accounts")
+            raise InvalidArgumentError(
+                "Can only set type attribute to top" " level accounts"
+            )
         self._type = value
 
     def increment(self, amount):
@@ -137,11 +153,12 @@ class Account(Base):
 
     def __repr__(self):
         return "<Account(name={}, code={}, balance={})>".format(
-                self.name, self.code, self.balance)
+            self.name, self.code, self.balance
+        )
 
 
 class AccountTransaction(Base):
-    __tablename__ = 'account_transaction'
+    __tablename__ = "account_transaction"
 
     id = Column(Integer, primary_key=True)
     created = Column(DateTime, default=datetime.now)
@@ -170,34 +187,37 @@ class AccountTransaction(Base):
 
     def _get_entries(self, e_type):
         s = object_session(self)
-        return s.query(AccountTransactionEntry)\
-                .filter_by(transaction=self)\
-                .filter_by(type=e_type)\
-                .all()
+        return (
+            s.query(AccountTransactionEntry)
+            .filter_by(transaction=self)
+            .filter_by(type=e_type)
+            .all()
+        )
 
     def _create_entries(self, value, e_type):
         # value = [(account, amount)]
         if not isinstance(value, list):
             value = [value]
         for v in value:
-            e = AccountTransactionEntry(type=e_type, target=v[0],
-                                        transaction=self, amount=Decimal(v[1]))
+            e = AccountTransactionEntry(
+                type=e_type, target=v[0], transaction=self, amount=Decimal(v[1])
+            )
 
 
 class AccountTransactionEntry(Base):
-    __tablename__ = 'account_transaction_entry'
+    __tablename__ = "account_transaction_entry"
 
-    TYPE_SOURCE = 'source'
-    TYPE_DEST = 'dest'
+    TYPE_SOURCE = "source"
+    TYPE_DEST = "dest"
 
     id = Column(Integer, primary_key=True)
-    target_id = Column(Integer, ForeignKey('account.id'), nullable=False)
+    target_id = Column(Integer, ForeignKey("account.id"), nullable=False)
     target = relationship(Account, backref="transaction_entries")
-    transaction_id = Column(Integer, ForeignKey('account_transaction.id'),
-                            nullable=False)
+    transaction_id = Column(
+        Integer, ForeignKey("account_transaction.id"), nullable=False
+    )
     transaction = relationship(AccountTransaction, backref="entries")
-    type = Column(Enum(TYPE_SOURCE, TYPE_DEST, name='entry_type'),
-                  nullable=False)
+    type = Column(Enum(TYPE_SOURCE, TYPE_DEST, name="entry_type"), nullable=False)
     amount = Column(Numeric(10, 2), nullable=False)
 
     def __repr__(self):
@@ -208,6 +228,7 @@ def entry_instances(iter_):
     for obj in iter_:
         if isinstance(obj, AccountTransactionEntry):
             yield obj
+
 
 def _entry_before_commit(session):
     changed = list(session.new)
@@ -222,7 +243,8 @@ def _entry_before_commit(session):
         else:
             raise TypeError("Unknown transaction type")
 
-event.listen(Session, 'before_commit', _entry_before_commit)
+
+event.listen(Session, "before_commit", _entry_before_commit)
 
 
 def transaction_instaces(iter_):
@@ -230,9 +252,11 @@ def transaction_instaces(iter_):
         if isinstance(obj, AccountTransaction):
             yield obj
 
+
 def _verify_transaction(session):
     changed = list(session.new) + list(session.dirty)
     for transaction in transaction_instaces(changed):
         transaction.verify()
+
 
 event.listen(Session, "before_commit", _verify_transaction)
