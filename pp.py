@@ -2,26 +2,33 @@
 
 from functools import partial
 
+
 def d(v):
-    if v == '': return v
+    if v == "":
+        return v
     return "{:.2f}".format(v)
+
 
 def print_account(acc, depth=None):
     width = 80
     col2 = 9
     col3 = 9
     col1 = width - (col2 + col3 + 3)
-    patt = partial(" {0:<{col1}} {1:>{col2}} {2:>{col3}}".format,
-                   **{'col1': col1, 'col2': col2, 'col3': col3})
-    #print(patt('', 'DEBE', 'HABER'))
-    #print('-'*width)
+    patt = partial(
+        " {0:<{col1}} {1:>{col2}} {2:>{col3}}".format,
+        **{"col1": col1, "col2": col2, "col3": col3}
+    )
+    # print(patt('', 'DEBE', 'HABER'))
+    # print('-'*width)
     print_lines(acc, patt, depth)
+
 
 def print_lines(acc, patt, depth=None):
     print_line(acc, patt)
     for c in acc.children:
         if depth > 0 or depth is None:
-            print_lines(c, patt, (depth-1) if depth else None)
+            print_lines(c, patt, (depth - 1) if depth else None)
+
 
 def print_line(acc, patt):
     name = str(acc.name)
@@ -29,16 +36,19 @@ def print_line(acc, patt):
         name = name.upper()
     if acc.type == acc.TYPE_CREDIT:
         credit = acc.balance
-        debit = ''
+        debit = ""
     elif acc.type == acc.TYPE_DEBIT:
-        credit = ''
+        credit = ""
         debit = acc.balance
     else:
-        raise ValueError('Unknown type for {!r} ({})'.format(acc, acc.type))
-    print((patt('{} {}'.format(acc.code, name), d(credit), d(debit))))
+        raise ValueError("Unknown type for {!r} ({})".format(acc, acc.type))
+    print((patt("{} {}".format(acc.code, name), d(credit), d(debit))))
+
 
 def print_transaction(t):
     for dest in t.dest:
         print(("  {:<57} {:>9} {:>9}".format(dest.target.name, d(dest.amount), "")))
     for src in t.source:
-        print(("       a {:<50} {:>9} {:>9}".format(src.target.name, "", d(src.amount))))
+        print(
+            ("       a {:<50} {:>9} {:>9}".format(src.target.name, "", d(src.amount)))
+        )
